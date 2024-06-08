@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 signal health_changed(health_value)
-
+@export var offlineMode: bool
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
@@ -16,16 +16,21 @@ const JUMP_VELOCITY = 10.0
 var gravity = 20.0
 
 func _enter_tree():
-	set_multiplayer_authority(str(name).to_int())
+	print(offlineMode)
+	if not offlineMode:
+		set_multiplayer_authority(str(name).to_int())
+
 
 func _ready():
-	if not is_multiplayer_authority(): return
+	if not offlineMode:
+		if not is_multiplayer_authority(): return
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
 func _unhandled_input(event):
-	if not is_multiplayer_authority(): return
+	if not offlineMode:
+		if not is_multiplayer_authority(): return
 	
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * .005)
