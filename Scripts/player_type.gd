@@ -1,0 +1,1 @@
+enum PlayerType{NEUTRAL=0, BLUETEAM=1, REDTEAM=2}

@@ -1,7 +1,8 @@
 extends CharacterBody3D
 
 signal health_changed(health_value)
-
+const PlayerTag = preload( "res://Scripts/player_type.gd")
+@export var current_tag: PlayerTag.PlayerType 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
@@ -37,8 +38,12 @@ func _unhandled_input(event):
 		play_shoot_effects.rpc()
 		if raycast.is_colliding():
 			var hit_player = raycast.get_collider()
+			#var hit_tag: PlayerTag.PlayerType
+			
 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-
+			
+	
+		
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 	
@@ -88,3 +93,10 @@ func receive_damage():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
+		
+		
+func _set_player_tag():
+		var tag:int = 0
+		print(tag)
+		current_tag = tag
+		print(PlayerTag.PlayerType.keys()[current_tag])
