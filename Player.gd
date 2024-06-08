@@ -1,8 +1,7 @@
 extends CharacterBody3D
 
 signal health_changed(health_value)
-const PlayerTag = preload( "res://Scripts/player_type.gd")
-@export var current_tag: PlayerTag.PlayerType 
+@export var offlineMode: bool
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
@@ -17,16 +16,21 @@ const JUMP_VELOCITY = 10.0
 var gravity = 20.0
 
 func _enter_tree():
-	set_multiplayer_authority(str(name).to_int())
+	print(offlineMode)
+	if not offlineMode:
+		set_multiplayer_authority(str(name).to_int())
+
 
 func _ready():
-	if not is_multiplayer_authority(): return
+	if not offlineMode:
+		if not is_multiplayer_authority(): return
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
 func _unhandled_input(event):
-	if not is_multiplayer_authority(): return
+	if not offlineMode:
+		if not is_multiplayer_authority(): return
 	
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * .005)
@@ -38,12 +42,8 @@ func _unhandled_input(event):
 		play_shoot_effects.rpc()
 		if raycast.is_colliding():
 			var hit_player = raycast.get_collider()
-			#var hit_tag: PlayerTag.PlayerType
-			
 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			
-	
-		
+
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 	
@@ -93,10 +93,3 @@ func receive_damage():
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
-		
-		
-func _set_player_tag():
-		var tag:int = 0
-		print(tag)
-		current_tag = tag
-		print(PlayerTag.PlayerType.keys()[current_tag])
