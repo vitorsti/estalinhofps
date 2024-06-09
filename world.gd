@@ -6,7 +6,10 @@ extends Node
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
-#@onready var teamId = 0
+@export var red_team_spawn: Node3D
+@export var blue_team_spawn: Node3D
+
+var teamId = 0
 
 const Player = preload("res://player.tscn")
 const PORT = 9999
@@ -18,13 +21,16 @@ func _unhandled_input(event):
 
 func _on_host_button_pressed():
 	main_menu.hide()
-	#chooseTeamScreen.show()
+	
 	hud.show()
 	
 	enet_peer.create_server(PORT)
 	multiplayer.multiplayer_peer = enet_peer
+	
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
+	
+	#chooseTeamScreen.show()
 	
 	add_player(multiplayer.get_unique_id())
 	
@@ -32,19 +38,23 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	main_menu.hide()
-	#chooseTeamScreen.show()
+	#chooseTeamScreen.show
 	hud.show()
+	
 	enet_peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = enet_peer
-
+	
+	#chooseTeamScreen.show()
+	
 func add_player(peer_id):
 	var player = Player.instantiate()
-	#player.team = team_tag
+	#player.team = teamId
 	#player.add_to_group(team)
 	player.name = str(peer_id)
 	add_child(player)
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
+		#player.set_team_tag.rpc(teamId)
 
 func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
@@ -60,7 +70,9 @@ func update_health_bar(health_value):
 func _on_multiplayer_spawner_spawned(node):
 	if node.is_multiplayer_authority():
 		node.health_changed.connect(update_health_bar)
-
+		#if node.has_method("set_team_tag"):
+			#node.set_team_tag.rpc(teamId)
+		
 func upnp_setup():
 	var upnp = UPNP.new()
 	
@@ -81,6 +93,28 @@ func upnp_setup():
 
 
 
+func  get_red_spawn() -> Vector3:
+	return red_team_spawn.global_position
+
+func  get_blue_spawn() -> Vector3:
+	return blue_team_spawn.global_position
 
 
+func _on_blue_team_pressed():
+	chooseTeamScreen.hide()
+	hud.show()
+	teamId = 1
+	if multiplayer.is_server():
+		multiplayer.peer_connected.connect(add_player)
+		multiplayer.peer_disconnected.connect(remove_player)
+		add_player(multiplayer.get_unique_id())
 
+
+func _on_red_team_pressed():
+	chooseTeamScreen.hide()
+	hud.show()
+	teamId = 2
+	if multiplayer.is_server():
+		multiplayer.peer_connected.connect(add_player)
+		multiplayer.peer_disconnected.connect(remove_player)
+		add_player(multiplayer.get_unique_id())

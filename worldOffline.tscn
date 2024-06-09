@@ -25,7 +25,7 @@ bg_color = Color(1, 0.117647, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cmecq"]
 bg_color = Color(0.00392157, 1, 0, 1)
 
-[node name="World" type="Node"]
+[node name="World2" type="Node"]
 script = ExtResource("1_dtgi1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

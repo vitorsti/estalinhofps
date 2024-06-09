@@ -1,14 +1,15 @@
 extends CharacterBody3D
 
 signal health_changed(health_value)
-
+var parent
 @export var offlineMode: bool
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var raycast = $Camera3D/RayCast3D
-
+@onready var choose_team_screen = $CanvasLayer/ChooseYourTeam
+@onready var player_is_ready: bool = false
 @onready var team = 0
 var health = 3
 
@@ -24,22 +25,26 @@ func _enter_tree():
 	print(offlineMode)
 	if not offlineMode:
 		set_multiplayer_authority(str(name).to_int())
+		parent = get_parent()
 
 
 func _ready():
 	if not offlineMode:
 		if not is_multiplayer_authority(): return
-		
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	camera.current = true
+		camera.current = true
+		choose_team_screen.show()
+		#Select_team()
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	#camera.current = true
 		
 func _print_group():
 	print(self.get_groups())
 	
 func _unhandled_input(event):
 	if not offlineMode:
-		if not is_multiplayer_authority(): return
-		
+		if not is_multiplayer_authority() : return
+		if not  player_is_ready: return
+	
 	if  Input.is_action_just_pressed("neutral"):
 		_print_group()
 	if Input.is_action_just_pressed("blue"):
@@ -92,7 +97,7 @@ func _unhandled_input(event):
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
-	
+	if not player_is_ready: return
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -164,12 +169,32 @@ func set_team_tag(tag):
 		#team = tag
 		#print(team)
 	#team_changed.emit(team)
-	 
+
+func team_seted():
+	if is_multiplayer_authority():
+		choose_team_screen.hide()
+		
+		if team == 1:
+			if parent.has_method("get_blue_spawn"):
+				self.transform.origin = parent.get_blue_spawn()
+		if team == 2:
+			if parent.has_method("get_red_spawn"):
+				self.transform.origin = parent.get_red_spawn()
+		#camera.current = true
+		player_is_ready = true
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		#choose_team_screen.show()
+
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
 
+func _on_blue_team_pressed():
+	if is_multiplayer_authority():
+		set_team_tag.rpc(1)
+		team_seted()
 
-
-
-
+func _on_red_team_pressed():
+	if is_multiplayer_authority():
+		set_team_tag.rpc(2)
+		team_seted()
