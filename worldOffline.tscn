@@ -29,6 +29,7 @@ script = ExtResource("1_dtgi1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -89,9 +90,15 @@ mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -568.0
+offset_top = -323.0
+offset_right = -56.0
+offset_bottom = 189.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.03, 0.03)
@@ -101,15 +108,14 @@ stretch_mode = 5
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer/HUD"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 330.0
-offset_top = 70.0
-offset_right = -330.0
-offset_bottom = -536.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.0
+offset_top = 10.0
+offset_right = 42.0
+offset_bottom = 18.0
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_ujyws")
 theme_override_styles/fill = SubResource("StyleBoxFlat_cmecq")
 max_value = 3.0

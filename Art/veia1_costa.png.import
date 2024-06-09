@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xhfb2whayj0x"
-path.s3tc="res://.godot/imported/chico_bueno.png-e750e0858baa2b43e3f36274b629d67e.s3tc.ctex"
+uid="uid://gdy1yt1rtl50"
+path.s3tc="res://.godot/imported/veia1_costa.png-cb9143d91ee03cae8a5c63860f288dfb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/chico_bueno.png"
-dest_files=["res://.godot/imported/chico_bueno.png-e750e0858baa2b43e3f36274b629d67e.s3tc.ctex"]
+source_file="res://Art/veia1_costa.png"
+dest_files=["res://.godot/imported/veia1_costa.png-cb9143d91ee03cae8a5c63860f288dfb.s3tc.ctex"]
 
 [params]
 

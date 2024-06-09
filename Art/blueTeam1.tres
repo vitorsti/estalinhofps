@@ -1,9 +1,12 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://tld0gfkrf6mr"]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://tld0gfkrf6mr"]
 
-[ext_resource type="Texture2D" uid="uid://ujjvuj3hnw5n" path="res://Art/chico_bueno1.png" id="1_xre3i"]
+[ext_resource type="Texture2D" uid="uid://jjs0nxj3lgge" path="res://Art/chico_bueno1.png" id="1_xre3i"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dwttp"]
+load_path = "res://.godot/imported/chico_bueno1.png-5a3ea8d69b4006ccae42194096eda437.s3tc.ctex"
 
 [resource]
 transparency = 1
 albedo_texture = ExtResource("1_xre3i")
 emission_energy_multiplier = 0.0
-emission_texture = ExtResource("1_xre3i")
+emission_texture = SubResource("CompressedTexture2D_dwttp")

@@ -49,7 +49,8 @@ func _ready():
 		#Select_team()
 	
 		
-
+func _process(delta):
+	pass
 	
 func _unhandled_input(event):
 	if not offlineMode:
@@ -96,6 +97,7 @@ func _unhandled_input(event):
 				if hit_player.is_enemy(self):
 					print("Enemy detected, attempting to deal damage")
 					hit_player.rpc_id(hit_player.get_multiplayer_authority(), "receive_damage")
+					#hit_player.rpc_id(hit_player.get_multiplayer_authority(), "play_get_hit")
 					
 #	if Input.is_action_just_pressed("shoot") \
 #			and anim_player.current_animation != "shoot":
@@ -146,6 +148,17 @@ func _physics_process(delta):
 	move_and_slide()
 
 @rpc("call_local")
+func play_get_hit():
+	#if is_multiplayer_authority():
+	meshCosta.get_surface_override_material(0).albedo_color = Color.RED
+	meshFrente.get_surface_override_material(0).albedo_color = Color.RED
+	#meshFrente.material.albedo_color = Color.RED
+	await get_tree().create_timer(1).timeout
+	#meshFrente.material.albedo_color = Color.WHITE
+	meshCosta.get_surface_override_material(0).albedo_color = Color.WHITE
+	meshFrente.get_surface_override_material(0).albedo_color = Color.WHITE
+	
+@rpc("call_local")
 func play_shoot_effects():
 	anim_player.stop()
 	anim_player.play("shoot")
@@ -175,6 +188,7 @@ func receive_damage():
 	#if not is_multiplayer_authority(): return
 	health -= 1
 	print("Received damage, new health =", health)
+	play_get_hit.rpc()
 	if health <= 0:
 		health = 3
 		spawn()

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jjs0nxj3lgge"
-path.s3tc="res://.godot/imported/chico_bueno1.png-5a3ea8d69b4006ccae42194096eda437.s3tc.ctex"
+uid="uid://dq5823xk73qgw"
+path.s3tc="res://.godot/imported/sky.png-9d51720f6e6aded457bb2dc9cbda1ddb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/chico_bueno1.png"
-dest_files=["res://.godot/imported/chico_bueno1.png-5a3ea8d69b4006ccae42194096eda437.s3tc.ctex"]
+source_file="res://Art/sky.png"
+dest_files=["res://.godot/imported/sky.png-9d51720f6e6aded457bb2dc9cbda1ddb.s3tc.ctex"]
 
 [params]
 

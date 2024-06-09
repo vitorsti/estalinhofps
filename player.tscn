@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://xcjrjq5cbn7y"]
+[gd_scene load_steps=22 format=3 uid="uid://xcjrjq5cbn7y"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_2v3wm"]
 [ext_resource type="PackedScene" uid="uid://cf1dcxwv6bvl3" path="res://models/Pistol.glb" id="2_4esil"]
+[ext_resource type="Texture2D" uid="uid://dq5823xk73qgw" path="res://Art/sky.png" id="2_jr5bq"]
 [ext_resource type="Texture2D" uid="uid://vwob30tkwej4" path="res://addons/kenney_particle_pack/star_06.png" id="3_27dhu"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wey50"]
@@ -12,10 +13,21 @@ orientation = 2
 orientation = 2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_67y6s"]
+radius = 0.4
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nm1v2"]
+sky_top_color = Color(0, 0.721569, 0.870588, 1)
+sky_horizon_color = Color(1, 0.652088, 0.412205, 1)
+sky_cover = ExtResource("2_jr5bq")
+sky_cover_modulate = Color(1, 1, 1, 0.243137)
+
+[sub_resource type="Sky" id="Sky_1ksb4"]
+sky_material = SubResource("ProceduralSkyMaterial_nm1v2")
 
 [sub_resource type="Environment" id="Environment_kvqfg"]
-background_mode = 1
+background_mode = 2
 background_color = Color(9.62615e-07, 0.723145, 0.869137, 1)
+sky = SubResource("Sky_1ksb4")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 
@@ -203,12 +215,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35938, 0)
 mesh = SubResource("PlaneMesh_3nr86")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000173807, 0.994774, 0.000861645)
 shape = SubResource("CapsuleShape3D_67y6s")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0146427, 1.53683, -0.361244)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0146427, 1.53683, -0.200888)
 environment = SubResource("Environment_kvqfg")
+near = 0.001
 
 [node name="Pistol" parent="Camera3D" instance=ExtResource("2_4esil")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.25, -0.5)
