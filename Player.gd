@@ -40,16 +40,14 @@ func _ready():
 		#Select_team()
 	
 		
-func _print_group():
-	print(self.get_groups())
+
 	
 func _unhandled_input(event):
 	if not offlineMode:
 		if not is_multiplayer_authority() : return
 		if not  player_is_ready: return
 	
-	if  Input.is_action_just_pressed("neutral"):
-		_print_group()
+	
 	if Input.is_action_just_pressed("blue"):
 		var team_tag = 1
 		#team_tag.changed.emit(team_tag) 
@@ -80,20 +78,29 @@ func _unhandled_input(event):
 		rotate_y(-event.relative.x * .005)
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
-	
-	if Input.is_action_just_pressed("shoot") \
-			and anim_player.current_animation != "shoot":
+		
+	if Input.is_action_just_pressed("shoot") and anim_player.current_animation != "shoot":
 		play_shoot_effects.rpc()
 		if raycast.is_colliding():
 			var hit_player = raycast.get_collider()
 			if hit_player is CharacterBody3D:
-				var other_player = hit_player as CharacterBody3D#hit_player
-				if other_player.has_method("is_enemy"):
-					if other_player.is_enemy(self):
-						print("Enemy detected, attempting to deal damage")
-						other_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-					else:
-						print("Hit a friendly or neutral player")
+				if hit_player.is_enemy(self):
+					print("Enemy detected, attempting to deal damage")
+					hit_player.rpc_id(hit_player.get_multiplayer_authority(), "receive_damage")
+					
+#	if Input.is_action_just_pressed("shoot") \
+#			and anim_player.current_animation != "shoot":
+#		play_shoot_effects.rpc()
+#		if raycast.is_colliding():
+#			var hit_player = raycast.get_collider()
+#			if hit_player is CharacterBody3D:
+#				var other_player = hit_player as CharacterBody3D#hit_player
+#				if other_player.has_method("is_enemy"):
+#					if other_player.is_enemy(self):
+#						print("Enemy detected, attempting to deal damage")
+#						other_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
+#					else:
+#						print("Hit a friendly or neutral player")
 					#if other_player.is_enemy(self):
 						#print("damaged enemy")
 						#other_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
@@ -144,8 +151,19 @@ func play_shoot_effects():
 #		position = Vector3.ZERO
 #	health_changed.emit(health)
 
+#@rpc("any_peer")
+#func receive_damage():
+#	#if not is_multiplayer_authority(): return
+#	health -= 1
+#	print("Received damage, new health =", health)
+#	if health <= 0:
+#		health = 3
+#		spawn()
+#	health_changed.emit(health)
+	
 @rpc("any_peer")
 func receive_damage():
+	#if not is_multiplayer_authority(): return
 	health -= 1
 	print("Received damage, new health =", health)
 	if health <= 0:
@@ -155,15 +173,24 @@ func receive_damage():
 
 
 func is_enemy(other_player: CharacterBody3D) -> bool:
-	var result = other_player.team != team
-	print("Checking if enemy: other team =", other_player.team, "my team =", team, "result =", result)
-	return result
+	return other_player.team != team
+	#var result = other_player.team != team
+	#print("Checking if enemy: other team =", other_player.team, "my team =", team, "result =", result)
+	#return result
+	
+@rpc("call_remote")
+func is_enemy_rpc(other_player_id, shooter_id):
+	var other_player = get_node("/root").get_node_by_network_id(other_player_id, shooter_id)
+	var shooter = get_node("/root").get_node_by_network_id(shooter_id)
+	if other_player and shooter and other_player.is_enemy(shooter):
+		other_player.receive_damage()
 
 @rpc("call_local")
 func set_team_tag(tag):
 	#if is_multiplayer_authority():
-	print(tag)
-	team = tag
+	var teamtag = tag
+	print(teamtag)
+	team = teamtag
 	print(team)
 	print(self.name)
 	#team_selected()
@@ -175,23 +202,26 @@ func set_team_tag(tag):
 	
 func spawn():
 	if team == 1:
+		set_team_tag.rpc(1)
 		if parent.has_method("get_blue_spawn"):
 			self.transform.origin = parent.get_blue_spawn().global_position
 			#self.transform.basis = parent.get_blue_spawn().global_rotation
 	if team == 2:
+		set_team_tag.rpc(2)
 		if parent.has_method("get_red_spawn"):
 			self.transform.origin = parent.get_red_spawn().global_position
 			self.rotation_degrees = Vector3(0,180,0)
 			
 			
+
 func team_seted():
 	if is_multiplayer_authority():
 		choose_team_screen.hide()
 		
-		spawn()
+	spawn()
 		#camera.current = true
-		player_is_ready = true
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	player_is_ready = true
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		#choose_team_screen.show()
 
 func _on_animation_player_animation_finished(anim_name):
@@ -199,11 +229,13 @@ func _on_animation_player_animation_finished(anim_name):
 		anim_player.play("idle")
 
 func _on_blue_team_pressed():
-	if is_multiplayer_authority():
-		set_team_tag.rpc(1)
-		team_seted()
+	#if is_multiplayer_authority():
+	set_team_tag.rpc(1)
+	team_seted()
+	set_team_tag.rpc(1)
 
 func _on_red_team_pressed():
-	if is_multiplayer_authority():
-		set_team_tag.rpc(2)
-		team_seted()
+	#if is_multiplayer_authority():
+	set_team_tag.rpc(2)
+	team_seted()
+	set_team_tag.rpc(2)

@@ -117,6 +117,7 @@ value = 3.0
 show_percentage = false
 
 [node name="Player" parent="." instance=ExtResource("4_lldta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.90836)
 offlineMode = true
 
 [node name="blockbench_export" parent="." instance=ExtResource("4_koiyj")]
