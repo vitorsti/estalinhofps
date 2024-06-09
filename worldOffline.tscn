@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://environment.tscn" id="2_k1qa1"]
 [ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="3_ggqcx"]
 [ext_resource type="PackedScene" uid="uid://xcjrjq5cbn7y" path="res://player.tscn" id="4_lldta"]
-[ext_resource type="PackedScene" uid="uid://cgi8nrmjbo78o" path="res://models/map.gltf" id="5_77exx"]
+[ext_resource type="PackedScene" path="res://models/map.gltf" id="5_77exx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_u5pdl"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
