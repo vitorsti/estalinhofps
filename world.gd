@@ -13,8 +13,11 @@ var teamId = 0
 
 const Player = preload("res://player.tscn")
 const PORT = 9999
+#enable line under to build for windowws
 var enet_peer = ENetMultiplayerPeer.new()
 
+#enable line uunder to build for web
+#var enet_peer = WebSocketMultiplayerPeer.new()
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
@@ -40,7 +43,7 @@ func _on_join_button_pressed():
 	main_menu.hide()
 	#chooseTeamScreen.show
 	hud.show()
-	
+	#enet_peer.
 	enet_peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = enet_peer
 	
