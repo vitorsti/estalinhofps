@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://dg6at53ff6c53"
+path="res://.godot/imported/map_3.png-2b5231e3ab48b3fe4c25b410e4ff0acb.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "f5d7e425774bb6aed3a4f8d9c636c822"
+}
+
+[deps]
+
+source_file="res://models/map_3.png"
+dest_files=["res://.godot/imported/map_3.png-2b5231e3ab48b3fe4c25b410e4ff0acb.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

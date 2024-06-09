@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://8d8c1j6ardfv"]
+
+[ext_resource type="PackedScene" uid="uid://cgi8nrmjbo78o" path="res://models/map.gltf" id="1_t2dq2"]
+
+[node name="blockbench_export" instance=ExtResource("1_t2dq2")]
