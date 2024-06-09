@@ -33,9 +33,12 @@ func _ready():
 		if not is_multiplayer_authority(): return
 		camera.current = true
 		choose_team_screen.show()
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		camera.current = true
+		player_is_ready = true
 		#Select_team()
-	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	#camera.current = true
+	
 		
 func _print_group():
 	print(self.get_groups())
@@ -147,7 +150,7 @@ func receive_damage():
 	print("Received damage, new health =", health)
 	if health <= 0:
 		health = 3
-		position = Vector3.ZERO
+		spawn()
 	health_changed.emit(health)
 
 
@@ -169,17 +172,23 @@ func set_team_tag(tag):
 		#team = tag
 		#print(team)
 	#team_changed.emit(team)
-
+	
+func spawn():
+	if team == 1:
+		if parent.has_method("get_blue_spawn"):
+			self.transform.origin = parent.get_blue_spawn().global_position
+			#self.transform.basis = parent.get_blue_spawn().global_rotation
+	if team == 2:
+		if parent.has_method("get_red_spawn"):
+			self.transform.origin = parent.get_red_spawn().global_position
+			self.rotation_degrees = Vector3(0,180,0)
+			
+			
 func team_seted():
 	if is_multiplayer_authority():
 		choose_team_screen.hide()
 		
-		if team == 1:
-			if parent.has_method("get_blue_spawn"):
-				self.transform.origin = parent.get_blue_spawn()
-		if team == 2:
-			if parent.has_method("get_red_spawn"):
-				self.transform.origin = parent.get_red_spawn()
+		spawn()
 		#camera.current = true
 		player_is_ready = true
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

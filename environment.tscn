@@ -15,5 +15,12 @@ uv1_triplanar = true
 [node name="Environment" instance=ExtResource("1_p4eel")]
 
 [node name="Plane" parent="." index="0"]
+visible = false
 surface_material_override/0 = SubResource("StandardMaterial3D_if5ix")
 surface_material_override/1 = SubResource("StandardMaterial3D_jylvv")
+
+[node name="StaticBody3D" parent="Plane" index="0"]
+visible = false
+
+[node name="CollisionShape3D" parent="Plane/StaticBody3D" index="0"]
+visible = false

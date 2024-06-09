@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://da2uljq2n8kog"]
+[gd_scene load_steps=10 format=3 uid="uid://da2uljq2n8kog"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_dtgi1"]
-[ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://environment.tscn" id="2_k1qa1"]
 [ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="3_ggqcx"]
+[ext_resource type="PackedScene" uid="uid://bl5ba66t2pi8v" path="res://pracinha.tscn" id="4_koiyj"]
 [ext_resource type="PackedScene" uid="uid://xcjrjq5cbn7y" path="res://player.tscn" id="4_lldta"]
-[ext_resource type="PackedScene" path="res://models/map.gltf" id="5_77exx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_u5pdl"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -34,8 +33,6 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6knbf")
-
-[node name="Environment" parent="." instance=ExtResource("2_k1qa1")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -122,8 +119,7 @@ show_percentage = false
 [node name="Player" parent="." instance=ExtResource("4_lldta")]
 offlineMode = true
 
-[node name="blockbench_export" parent="." instance=ExtResource("5_77exx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4712, -0.0762918, 5.06118)
+[node name="blockbench_export" parent="." instance=ExtResource("4_koiyj")]
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

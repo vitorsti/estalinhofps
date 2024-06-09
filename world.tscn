@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://c8oqxmm2w2wvv"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_6tkge"]
-[ext_resource type="PackedScene" uid="uid://c1j7an8woikyd" path="res://environment.tscn" id="1_iktak"]
+[ext_resource type="PackedScene" uid="uid://bl5ba66t2pi8v" path="res://pracinha.tscn" id="2_lahec"]
 [ext_resource type="Texture2D" uid="uid://8ka2ui7sq36p" path="res://addons/kenney_particle_pack/circle_05.png" id="3_ehmxv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_u5pdl"]
@@ -35,7 +35,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6knbf")
 
-[node name="Environment" parent="." instance=ExtResource("1_iktak")]
+[node name="blockbench_export" parent="." instance=ExtResource("2_lahec")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -171,10 +171,10 @@ offset_bottom = 53.0
 text = "Team: 0"
 
 [node name="RedTeamSpawn" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49554, 3.86959, -24.4888)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.0457039, 1.19329, -19.3459)
 
 [node name="BlueTeamSpawn" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49554, 3.86959, 24.2195)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.212331, 1.34303, 18.865)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player.tscn")

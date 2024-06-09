@@ -93,12 +93,10 @@ func upnp_setup():
 
 
 
-func  get_red_spawn() -> Vector3:
-	return red_team_spawn.global_position
-
-func  get_blue_spawn() -> Vector3:
-	return blue_team_spawn.global_position
-
+func  get_red_spawn() -> Node3D:
+	return red_team_spawn
+func  get_blue_spawn() -> Node3D:
+	return blue_team_spawn
 
 func _on_blue_team_pressed():
 	chooseTeamScreen.hide()
