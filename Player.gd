@@ -1,12 +1,14 @@
 extends CharacterBody3D
-enum player_tag{NEUTRAL, RED, BLUE}
+
 signal health_changed(health_value)
 @export var offlineMode: bool
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/Pistol/MuzzleFlash
 @onready var raycast = $Camera3D/RayCast3D
-@export var team_tag: player_tag
+
+var team_tag
+
 var health = 3
 
 const SPEED = 10.0
@@ -27,24 +29,40 @@ func _ready():
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
-func _print_tag():
-	print(player_tag.keys()[team_tag])
+func _print_group():
+	print(self.get_groups())
 	
 func _unhandled_input(event):
 	if not offlineMode:
 		if not is_multiplayer_authority(): return
 		
-	if Input.is_action_just_pressed("neutral"):
-		set_team_tag(player_tag.NEUTRAL)
-		_print_tag()
-		
+	if  Input.is_action_just_pressed("neutral"):
+		_print_group()
 	if Input.is_action_just_pressed("blue"):
-		set_team_tag(player_tag.BLUE)
-		_print_tag()
+		team_tag = 1
+		#team_tag.changed.emit(team_tag) 
+		if self.is_in_group("red") or self.is_in_group("neutral"):
+			remove_from_group("neutral")
+			remove_from_group("red")
+			add_to_group("blue")
+		else:
+			add_to_group("blue")
+		_print_group()
+		#set_team_tag(1)
+		#_print_tag()
 		
 	if Input.is_action_just_pressed("red"):
-		set_team_tag(player_tag.RED)
-		_print_tag()
+		team_tag = 2
+		#team_tag.changed.emit(team_tag)
+		if self.is_in_group("blue") or self.is_in_group("neutral"):
+			remove_from_group("neutral")
+			remove_from_group("blue")
+			add_to_group("red")
+		else:
+			add_to_group("blue")
+		_print_group()
+		#set_team_tag(2)
+		#_print_tag()
 		
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * .005)
@@ -57,16 +75,11 @@ func _unhandled_input(event):
 		if raycast.is_colliding():
 			var hit_player = raycast.get_collider()
 			if hit_player is CharacterBody3D:
-				var other_player = hit_player
+				var other_player = hit_player#hit_player
 				if other_player.has_method("is_enemy"):
-					if other_player.is_enemy(team_tag):
+					if other_player.is_enemy(self):
 						print("damaged enemy")
-			#var hit_player_tag: int = hit_player.get_type()
-			#hit_player_tag = hit_player.current_tag
-			#print(PlayerTag.PlayerType.keys()[hit_player_tag])
 						other_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-						#hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
-			#hit_player.get_type()
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
@@ -113,19 +126,18 @@ func receive_damage():
 		health = 3
 		position = Vector3.ZERO
 	health_changed.emit(health)
-	
-func is_enemy(other_player: player_tag) -> bool:
-	print("other player is: " ) 
-	print(other_player)
-	print("eu sou: ")
-	print(team_tag)
-	if other_player == team_tag:
+
+
+
+func is_enemy(other_player: CharacterBody3D) -> bool:
+
+	if other_player.team_tag == team_tag:
 		return false
 	else:
 		return true
 	
 	
-func set_team_tag(tag: player_tag):
+func set_team_tag(tag: int):
 	team_tag = tag
 	 
 func _on_animation_player_animation_finished(anim_name):

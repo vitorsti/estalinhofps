@@ -1,10 +1,15 @@
 extends Node
 
+@onready var chooseTeamScreen = $CanvasLayer/ChooseYourTeam
 @onready var main_menu = $CanvasLayer/MainMenu
 @onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
+
+@export var team: String
+
+@export var teamId: int
 
 const Player = preload("res://player.tscn")
 const PORT = 9999
@@ -30,12 +35,13 @@ func _on_host_button_pressed():
 func _on_join_button_pressed():
 	main_menu.hide()
 	hud.show()
-	
 	enet_peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = enet_peer
 
 func add_player(peer_id):
 	var player = Player.instantiate()
+	player.team_tag = teamId
+	player.add_to_group(team)
 	player.name = str(peer_id)
 	add_child(player)
 	if player.is_multiplayer_authority():
@@ -68,3 +74,25 @@ func upnp_setup():
 		"UPNP Port Mapping Failed! Error %s" % map_result)
 	
 	print("Success! Join Address: %s" % upnp.query_external_address())
+
+func _on_blue_team_pressed():
+	team = "blue"
+	var newid = 1
+	#setId(newid)
+	chooseTeamScreen.hide()
+	main_menu.show()
+	pass # Replace with function body.
+
+func _on_red_team_pressed():
+	team = "red"
+	var newid = 1
+	chooseTeamScreen.hide()
+	#setId(newid)
+	main_menu.show()
+	pass # Replace with function body.
+
+@rpc("any_peer")
+func setId(id):
+	teamId = id
+
+
