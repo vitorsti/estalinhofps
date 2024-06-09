@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cxv1ht6xshnwx"]
+
+[ext_resource type="Texture2D" uid="uid://dude7u1apym1r" path="res://Art/veia1.png" id="1_04eao"]
+[ext_resource type="Texture2D" uid="uid://ujjvuj3hnw5n" path="res://Art/chico_bueno1.png" id="1_p8gxr"]
+
+[resource]
+transparency = 1
+albedo_texture = ExtResource("1_04eao")
+emission_energy_multiplier = 0.0
+emission_texture = ExtResource("1_p8gxr")

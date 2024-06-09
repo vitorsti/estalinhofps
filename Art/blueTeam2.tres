@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cijxe766i5eat"]
+
+[ext_resource type="Texture2D" uid="uid://ujjvuj3hnw5n" path="res://Art/chico_bueno1.png" id="1_2ix1w"]
+
+[resource]
+transparency = 1
+albedo_texture = ExtResource("1_2ix1w")
+emission_energy_multiplier = 0.0
+emission_texture = ExtResource("1_2ix1w")

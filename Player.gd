@@ -2,6 +2,15 @@ extends CharacterBody3D
 
 signal health_changed(health_value)
 var parent
+
+@onready var meshFrente: MeshInstance3D = $frente
+@onready var meshCosta: MeshInstance3D = $costa
+
+const chicoFrente: Material = preload("res://Art/blueTeam1.tres")
+const chicoCosta: Material = preload("res://Art/blueTeam2.tres")
+const veiaFrente: Material = preload("res://Art/redTeam1.tres")
+const veiaCosta: Material = preload("res://Art/redTeam2.tres")
+
 @export var offlineMode: bool
 
 @onready var camera = $Camera3D
@@ -193,6 +202,12 @@ func set_team_tag(tag):
 	team = teamtag
 	print(team)
 	print(self.name)
+	if teamtag == 1:
+		meshFrente.set_surface_override_material(0,chicoFrente)
+		meshCosta.set_surface_override_material(0,chicoCosta)
+	if teamtag == 2:
+		meshFrente.set_surface_override_material(0,veiaFrente)
+		meshCosta.set_surface_override_material(0,veiaCosta)
 	#team_selected()
 	#else:
 		#print(tag)
@@ -224,6 +239,10 @@ func team_seted():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		#choose_team_screen.show()
 
+@rpc("call_local")
+func ChangeMaterials(mesh: MeshInstance3D, material: Material):
+		mesh.set_surface_override_material(0, material)
+		
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "shoot":
 		anim_player.play("idle")
@@ -233,9 +252,16 @@ func _on_blue_team_pressed():
 	set_team_tag.rpc(1)
 	team_seted()
 	set_team_tag.rpc(1)
+	
+	#if is_multiplayer_authority():
+	#	meshFrente.set_surface_override_material(0,chicoFrente)
+	#	meshCosta.set_surface_override_material(0,chicoCosta)
 
 func _on_red_team_pressed():
 	#if is_multiplayer_authority():
 	set_team_tag.rpc(2)
 	team_seted()
 	set_team_tag.rpc(2)
+	#if is_multiplayer_authority():
+	#	meshFrente.set_surface_override_material(0,veiaFrente)
+	#	meshCosta.set_surface_override_material(0,veiaCosta)
