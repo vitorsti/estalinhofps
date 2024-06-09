@@ -6,10 +6,7 @@ extends Node
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
 
-
-@export var team: String
-
-@export var teamId: int
+#@onready var teamId = 0
 
 const Player = preload("res://player.tscn")
 const PORT = 9999
@@ -21,6 +18,7 @@ func _unhandled_input(event):
 
 func _on_host_button_pressed():
 	main_menu.hide()
+	#chooseTeamScreen.show()
 	hud.show()
 	
 	enet_peer.create_server(PORT)
@@ -34,14 +32,15 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	main_menu.hide()
+	#chooseTeamScreen.show()
 	hud.show()
 	enet_peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = enet_peer
 
 func add_player(peer_id):
 	var player = Player.instantiate()
-	player.team_tag = teamId
-	player.add_to_group(team)
+	#player.team = team_tag
+	#player.add_to_group(team)
 	player.name = str(peer_id)
 	add_child(player)
 	if player.is_multiplayer_authority():
@@ -54,7 +53,10 @@ func remove_player(peer_id):
 
 func update_health_bar(health_value):
 	health_bar.value = health_value
-
+	
+#func update_team_tag(tag_value):
+	#teamId = tag_value
+	
 func _on_multiplayer_spawner_spawned(node):
 	if node.is_multiplayer_authority():
 		node.health_changed.connect(update_health_bar)
@@ -75,24 +77,10 @@ func upnp_setup():
 	
 	print("Success! Join Address: %s" % upnp.query_external_address())
 
-func _on_blue_team_pressed():
-	team = "blue"
-	var newid = 1
-	#setId(newid)
-	chooseTeamScreen.hide()
-	main_menu.show()
-	pass # Replace with function body.
 
-func _on_red_team_pressed():
-	team = "red"
-	var newid = 1
-	chooseTeamScreen.hide()
-	#setId(newid)
-	main_menu.show()
-	pass # Replace with function body.
 
-@rpc("any_peer")
-func setId(id):
-	teamId = id
+
+
+
 
 
