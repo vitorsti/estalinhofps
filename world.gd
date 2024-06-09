@@ -92,12 +92,9 @@ func upnp_setup():
 	
 	print("Success! Join Address: %s" % upnp.query_external_address())
 
-
-
-
-
 func  get_red_spawn() -> Node3D:
 	return red_team_spawn
+	
 func  get_blue_spawn() -> Node3D:
 	return blue_team_spawn
 
